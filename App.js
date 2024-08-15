@@ -1,66 +1,75 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import { Button } from 'react-native-paper';
-import DocumentPicker from 'react-native-document-picker';
+import * as React from 'react';
+import UploadScreen from './Screens/UploadScreen';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import DetailsScreen from './Screens/DetailsScreen';
+import ProfileScreen from './Screens/ProfileScreen';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function App() {
-    const selectDoc = async () => {
-        try {
-            const doc = await DocumentPicker.pick({
-                type: [DocumentPicker.types.images],
-                allowMultiSelection: true
-            });
-            console.log(doc);
-        } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-                console.log("User cancelled the upload", err);
-            } else {
-                console.log(err);
-            }
+// Main App Component
+export default function App(){
+    const TabNav = createBottomTabNavigator();
+
+    const tabConfig = [
+        {
+            name: "Upload",
+            component: UploadScreen,
+            focusedIcon: "file-upload",
+            unfocusedIcon: "file-upload-outline",
+            iconComponent: MaterialCommunityIcons
+        },
+        {
+            name: "Details",
+            component: DetailsScreen,
+            focusedIcon: "file-text",
+            unfocusedIcon: "file-text-o",
+            iconComponent: FontAwesome // Use FontAwesome for Details icons
+        },
+        {
+            name: "Profile",
+            component: ProfileScreen,
+            focusedIcon: "user",
+            unfocusedIcon: "user-o",
+            iconComponent: FontAwesome
         }
-    };
+    ];
 
-    return (
-        <>
-            <View>
-                <Text style={styles.textStyle1}> Medicine Reminder </Text>
-            </View>
-            <View>
-                <Text style={styles.textStyle2}> Please upload your Prescription </Text>
-            </View>
-            <View style={{ marginHorizontal: 40 }}>
-                <Button
-                    style={[styles.buttons, { backgroundColor: 'cyan' }]}
-                    textColor='black'
-                    labelStyle={{ fontSize: 20 }}
-                    onPress={selectDoc}
-                >
-                    Select Image
-                </Button>
-            </View>
-        </>
+    const screenOptions = ({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
+            const routeConfig = tabConfig.find(config => config.name === route.name);
+            const iconName = focused
+                ? routeConfig.focusedIcon
+                : routeConfig.unfocusedIcon;
+            const IconComponent = routeConfig.iconComponent;
+
+            return <IconComponent name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: 'red',
+        tabBarInactiveTintColor: 'black',
+        tabBarLabelStyle: {
+            fontSize: 14,
+            paddingBottom: 5,
+            fontWeight: '600'
+        },
+        tabBarStyle: {
+            height: 60,
+            paddingTop: 0
+        }
+    });
+
+    return(
+        <NavigationContainer>
+            <TabNav.Navigator screenOptions={screenOptions}>
+                {tabConfig.map(routeConfig => (
+                    <TabNav.Screen
+                        key ={routeConfig.name}
+                        name={routeConfig.name}
+                        component={routeConfig.component}
+                    />
+                ))}
+            </TabNav.Navigator>
+        </NavigationContainer>
     );
 }
-
-const styles = StyleSheet.create({
-    textStyle1: {
-        fontSize: 45,
-        color: 'blue',
-        textAlign: 'center',
-        marginTop: 20,
-        marginBottom: 20,
-        marginVertical: 40,
-    },
-    textStyle2: {
-        fontSize: 25,
-        color: 'black',
-        textAlign: 'center',
-        marginTop: 20,
-        marginBottom: 20,
-    },
-    buttons: {
-        width: '100%',
-        borderRadius: 3,
-        marginBottom: 15,
-    },
-});
