@@ -7,10 +7,19 @@ import ProfileScreen from './Screens/ProfileScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import SplashScreen from 'react-native-splash-screen';
+import { useEffect } from 'react';
+import LoginPage from './Screens/Login&Register/Login';
 
 // Main App Component
 export default function App(){
     const TabNav = createBottomTabNavigator();
+
+    useEffect(() => {
+        setTimeout(()=>{
+            SplashScreen.hide(); // Hide the splash screen after the app has loaded
+        }, 500)
+    });
 
     const tabConfig = [
         {
@@ -60,16 +69,18 @@ export default function App(){
     });
 
     return(
-        <NavigationContainer>
-            <TabNav.Navigator screenOptions={screenOptions}>
-                {tabConfig.map(routeConfig => (
-                    <TabNav.Screen
-                        key ={routeConfig.name}
-                        name={routeConfig.name}
-                        component={routeConfig.component}
-                    />
-                ))}
-            </TabNav.Navigator>
-        </NavigationContainer>
+        // <NavigationContainer>
+        //     <TabNav.Navigator screenOptions={screenOptions}>
+        //         {tabConfig.map(routeConfig => (
+        //             <TabNav.Screen
+        //                 key ={routeConfig.name}
+        //                 name={routeConfig.name}
+        //                 component={routeConfig.component}
+        //             />
+        //         ))}
+        //     </TabNav.Navigator>
+        // </NavigationContainer>
+
+        <LoginPage></LoginPage>
     );
 }
