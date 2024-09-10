@@ -19,7 +19,7 @@ class MainApplication : Application(), ReactApplication {
       object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> {
             return PackageList(this).packages.apply {
-              add(SplashScreenReactPackage())  // Manually add the SplashScreenReactPackage
+              //add(SplashScreenReactPackage())  // Manually add the SplashScreenReactPackage
             }
         }
 

@@ -10,6 +10,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import SplashScreen from 'react-native-splash-screen';
 import { useEffect } from 'react';
 import LoginPage from './Screens/Login&Register/Login';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import RegisterPage from './Screens/Login&Register/Register';
 
 // Main App Component
 export default function App(){
@@ -68,7 +70,17 @@ export default function App(){
         }
     });
 
+    const Stack = createNativeStackNavigator();
     return(
+        <NavigationContainer>
+            <Stack.Navigator screenOptions={{
+                headerShown: false
+            }}>
+                <Stack.Screen name="Login" component={LoginPage}></Stack.Screen>
+                <Stack.Screen name="Register" component={RegisterPage}></Stack.Screen>
+            </Stack.Navigator>
+        </NavigationContainer>
+
         // <NavigationContainer>
         //     <TabNav.Navigator screenOptions={screenOptions}>
         //         {tabConfig.map(routeConfig => (
@@ -81,6 +93,7 @@ export default function App(){
         //     </TabNav.Navigator>
         // </NavigationContainer>
 
-        <LoginPage></LoginPage>
+        // <LoginPage></LoginPage>
+
     );
 }
