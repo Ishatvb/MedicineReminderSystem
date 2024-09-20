@@ -6,6 +6,10 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import Error from 'react-native-vector-icons/MaterialIcons';
+import axios from "axios";
+import { Alert } from "react-native";
+import { useEffect } from "react";
+
 
 function LoginPage(){
     const navigation=useNavigation();
@@ -16,7 +20,7 @@ function LoginPage(){
 
     const [password, setPassword] = useState('');
     const [passwordVerify, setPasswordVerify] = useState(false);
-    const[showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     // Validation functions
 
@@ -42,6 +46,40 @@ function LoginPage(){
         }
     }
 
+
+    function handleSubmit(){
+        console.log(mobile, password);
+        const userData = {
+            mobile: mobile,
+            password: password,
+        };
+
+        axios.post('http://192.168.17.54:5001/login-user', userData).then(res => {
+        console.log(res.data);
+        if (res.data.status == 'ok') {
+            Alert.alert('Logged In Successfull');
+            // AsyncStorage.setItem('token', res.data.data);
+            // AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
+            // AsyncStorage.setItem('userType',res.data.userType)
+            navigation.navigate('MainTabs');
+            // if(res.data.userType=="Admin"){
+            //     navigation.navigate('AdminScreen');
+            // }else{
+            //     navigation.navigate('Home');
+            // }
+        }
+      });
+    }
+    // async function getData() {
+    //   const data = await AsyncStorage.getItem('isLoggedIn');
+      
+    //   console.log(data, 'at app.js');
+    
+    // }
+    // useEffect(()=>{
+    //   getData();
+    //   console.log("Hii");
+    // },[])
 
     return(
         <ScrollView 
@@ -122,7 +160,7 @@ function LoginPage(){
             </View>
 
             <View style={styles.button}>
-                <TouchableOpacity style={styles.inBut}>
+                <TouchableOpacity style={styles.inBut} onPress={()=>handleSubmit()}>
                     <View>
                         <Text style={styles.textSign}>Log In</Text>
                     </View>

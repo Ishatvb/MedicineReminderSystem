@@ -37,7 +37,7 @@ function RegisterPage(){
         };
         if(nameVerify && ageVerify && mobileVerify && passwordVerify){
             axios
-        .post("http://192.168.152.18:5001/register",userData)
+        .post("http://192.168.17.54:5001/register",userData)
         .then(res =>{
             console.log(res.data);
             if (res.data.status == 'ok'){
